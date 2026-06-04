@@ -19,6 +19,7 @@ services:
     build: ./apps/api
     environment:
       DATABASE_URL: postgresql+asyncpg://dash:dashpass@db:5432/friends_dash
+      JWT_SECRET: 3ff1c65a9c890c209234b6994a055dc428fae9e38b5a190d00653fc7762f08f4
     ports:
       - "8000:8000"
     depends_on:
