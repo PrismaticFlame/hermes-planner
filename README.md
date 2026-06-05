@@ -22,3 +22,9 @@
 </div>
 <hr>
 
+# Dashboard View (W.I.P)
+
+<div align="center">
+    <img src="apps/web/src/assets/Screenshot 2026-06-05 at 02-08-34 Hermes.png">
+</div>
+
