@@ -2,8 +2,8 @@
 
 <div align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="hermes_logo_black.png">
-        <source media="(prefers-color-scheme: light)" srcset="hermes_logo_white.png">
+        <source media="(prefers-color-scheme: dark)" srcset="hermes_logo_white.png">
+        <source media="(prefers-color-scheme: light)" srcset="hermes_logo_black.png">
         <img alt="Fallback image description" src="hermes_logo.png">
     </picture>
 </div>
