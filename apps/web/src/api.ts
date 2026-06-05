@@ -47,7 +47,9 @@ export interface Item {
 
 export const listItems = (kind?: string): Promise<Item[]> =>
     request(`/items${kind ? `?kind=${kind}` : ""}`);
-export const createItem = (item: { kind: string, title: string; description?: string }): Promise<Item> =>
-    request("/items", { method: "POST", body: JSON.stringify(item) });
+export const createItem = (item: { 
+    kind: string, title: string; description?: string 
+    status?: string; start_at?: string;
+}): Promise<Item> => request("/items", { method: "POST", body: JSON.stringify(item) });
 export const deleteItem = (id: string): Promise<null> =>
     request(`/items/${id}`, { method: "DELETE" });

@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { listItems, createItem, deleteItem, clearToken, type Item } from "./api";
 import { useRealtime } from "./useRealtime";
+import { ListView } from "./views/ListView";
+import { BoardView } from "./views/BoardView";
+import { CalendarView } from "./views/CalendarView";
+
+type View = "list" | "board" | "calendar";
 
 export function Dashboard({ onLogout }: { onLogout: () => void }) {
     const qc = useQueryClient();
     const [title, setTitle] = useState("");
     const [kind, setKind] = useState("task");
+    const [when, setWhen] = useState("");
+    const [view, setView] = useState<View>("list");
 
     useRealtime();
 
@@ -15,7 +22,6 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
         queryFn: () => listItems(),
     });
 
-    const invalidate = () => qc.invalidateQueries({ queryKey: ["items"] });
     const create = useMutation({
         mutationFn: createItem,
         onMutate: async (newItem) => {
@@ -26,7 +32,7 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
                 kind: newItem.kind as Item["kind"],
                 title: newItem.title,
                 description: newItem.description ?? null,
-                status: null, start_at: null, end_at: null,
+                status: null, start_at: newItem.start_at ?? null, end_at: null,
                 meta: {}, created_by: "me",
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
@@ -56,8 +62,9 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
 
     function add() {
         if (!title.trim()) return;
-        create.mutate({ kind, title });
+        create.mutate({ kind, title, start_at: when ? new Date(when).toISOString() : undefined });
         setTitle("");
+        setWhen("");
     }
 
     if (isLoading) return <p>Loading...</p>;
@@ -66,21 +73,25 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
         <div>
             <button onClick={() => { clearToken(); onLogout(); }}>Log out</button>
             <h2>Dashboard</h2>
+
             <select value={kind} onChange={(e) => setKind(e.target.value)}>
                 <option value="task">Task</option>
                 <option value="event">Event</option>
                 <option value="outing">Outing</option>
             </select>
             <input placeholder="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input type="datetime-local" value={when} onChange={(e) => setWhen(e.target.value)} />
             <button onClick={add}>Add</button>
-            <ul>
-                {items.map((item) => (
-                    <li key={item.id}>
-                        [{item.kind}] {item.title}
-                        <button onClick={() => remove.mutate(item.id)}>x</button>
-                    </li>
-                ))}
-            </ul>
+
+            <div style={{ margin: "1rem 0" }}>
+                <button onClick={() => setView("list")} disabled={view === "list"}>List</button>
+                <button onClick={() => setView("board")} disabled={view === "board"}>Board</button>
+                <button onClick={() => setView("calendar")} disabled={view === "calendar"}>Calendar</button>
+            </div>
+
+            {view === "list" && <ListView items={items} onDelete={remove.mutate} />}
+            {view === "board" && <BoardView items={items} onDelete={remove.mutate} />}
+            {view === "calendar" && <CalendarView items={items} onDelete={remove.mutate} />}
         </div>
     );
 }
