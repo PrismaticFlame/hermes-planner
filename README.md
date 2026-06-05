@@ -1,7 +1,14 @@
 # Hermes Planner
 
 <div align="center">
-    <img src="hermes_logo_white.png" width="60%" alt="Hermes" />
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="hermes_logo_black.png">
+        <source media="(prefers-color-scheme: light)" srcset="hermes_logo_white.png">
+        <img alt="Fallback image description" src="hermes_logo.png">
+    </picture>
+</div>
+<div align="center">
+    <h4><i>"As above, so below, as within, so without, as the universe, so the soul..."</i> - Hermes, Messenger of the Greek Gods </h4>
 </div>
 <hr>
 <div align="center" style="line-height: 2;">
@@ -15,4 +22,3 @@
 </div>
 <hr>
 
-This will help my friends and I plan events together and it will be lots of fun.
