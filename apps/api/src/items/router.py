@@ -14,11 +14,11 @@ router = APIRouter(prefix="/items", tags=["items"])
 @router.post("", response_model=ItemOut, status_code=201)
 async def create_item(data: ItemCreate, db: AsyncSession = Depends(get_db),
                       user: User = Depends(get_current_user)):
-    item = Item(**data.model_dump(), created_by=user.id)
+    item = Item(**data.model_dump(), creator=user)
     db.add(item)
     await db.commit()
     await broadcaster.publish({"type": "items_changed"})
-    await db.refresh(item)
+    await db.refresh(item, ["created_at", "updated_at", "creator"])
     return item
 
 @router.get("", response_model=list[ItemOut])
@@ -52,7 +52,7 @@ async def update_item(item_id: uuid.UUID, data: ItemUpdate,
         setattr(item, field, value)
     await db.commit()
     await broadcaster.publish({"type": "items_changed"})
-    await db.refresh(item)
+    await db.refresh(item, ["updated_at"])
     return item
 
 @router.delete("/{item_id}", status_code=204)

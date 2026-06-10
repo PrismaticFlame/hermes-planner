@@ -42,7 +42,9 @@ export interface Item {
     description: string | null; status: string | null;
     start_at: string | null; end_at: string | null;
     meta: Record<string, unknown>; created_by: string;
+    creator: { id: string; display_name: string };
     created_at: string; updated_at: string;
+    
 }
 
 export const listItems = (kind?: string): Promise<Item[]> =>

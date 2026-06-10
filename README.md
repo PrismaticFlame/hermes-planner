@@ -32,13 +32,13 @@
 1. Add per-entry modals
 2. More details for each added entry
 3. Voting/RSVP-esque functionality
-4. Entry creator displayed
+4. ~~Entry creator displayed~~
 5. Make calendar look... better?
 6. "Who's online" activity bar
 7. Improve Log Out button
-8. Increase font of days and numbers in Calendar
+8. ~~Increase font of days and numbers in Calendar~~
 9. Increase size of entries (across all views)
 10. Drop down arrow moves poorly
-11. Move view changer to top in rounded nav bar
+11. ~~Move view changer to top in rounded nav bar~~
 
 

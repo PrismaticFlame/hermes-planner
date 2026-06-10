@@ -22,6 +22,12 @@ class ItemUpdate(BaseModel):
     end_at: datetime | None = None
     meta: dict | None = None
 
+class CreatorOut(BaseModel):
+    id: uuid.UUID
+    display_name: str
+    class Config:
+        from_attributes = True
+
 class ItemOut(BaseModel):
     id: uuid.UUID
     kind: str
@@ -36,3 +42,4 @@ class ItemOut(BaseModel):
     updated_at: datetime
     class Config:
         from_attributes = True
+    creator: CreatorOut

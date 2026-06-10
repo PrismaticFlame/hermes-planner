@@ -34,7 +34,9 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
                 title: newItem.title,
                 description: newItem.description ?? null,
                 status: null, start_at: newItem.start_at ?? null, end_at: null,
-                meta: {}, created_by: "me",
+                meta: {}, 
+                created_by: "me",
+                creator: { id: "me", display_name: "You" },
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
             };
@@ -72,34 +74,35 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
 
     return (
         <div className="min-h-screen px-4 py-6 md:px-8">
-            <header className="mx-auto mb-6 flex max-w-5x1 items-center justify-between">
+            <header className="mx-auto mb-6 flex max-w-5x1 flex-wrap items-center justify-between gap-3">
                 <img src={logo} alt="Hermes" className="h-40" />
+
+                <nav className="inline-flex rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur">
+                    {(["list", "board", "calendar"] as const).map((v) => (
+                        <button key={v} onClick={() => setView(v)}
+                          className={`rounded-full px-4 py-1.5 text-sm capitalize transition ${
+                            view === v ? "bg-white/15 text-white" : "text-white/60 hover:text-white"}`}>
+                        {v}
+                    </button>
+                    ))}
+                </nav>
+
                 <button onClick={() => { clearToken(); onLogout(); }}
-                    className="text-sm text-white/70 transition hover:text-white">Log out</button>
+                    className="btn-ghost">Log out</button>
             </header>
 
             <main className="glass mx-auto max-w-5x1 p-6">
                 <div className="mb-6 flex flex-wrap items-center gap-3">
-                    <select className="field" value={kind} onChange={(e) => setKind(e.target.value)}>
+                    {/* <select className="field" value={kind} onChange={(e) => setKind(e.target.value)}>
                         <option value="task">Task</option>
                         <option value="event">Event</option>
                         <option value="outing">Outing</option>
-                    </select>
+                    </select> */}
                     <input className="field min-w-[12rem] flex-1" placeholder="What's the plan?"
                            value={title} onChange={(e) => setTitle(e.target.value)} />
                     <input className="field" type="datetime-local" value={when}
                            onChange={(e) => setWhen(e.target.value)} />
                     <button className="btn" onClick={add}>Add</button>
-                </div>
-
-                <div className="mb-6 inline-flex rounded-x1 border border-white/10 bg-white/5 p-1">
-                    {(["list", "board", "calendar"] as const).map((v) => (
-                        <button key={v} onClick={() => setView(v)}
-                        className={`rounded-lg px-4 py-1.5 text-sm capitalize transition ${
-                            view === v ? "bg-white/15 text-white" : "text-white/60 hover:text-white"}`}>
-                        {v}
-                        </button>
-                    ))}
                 </div>
 
                 {view === "list" && <ListView items={items} onDelete={remove.mutate} />}
